@@ -20,10 +20,9 @@
             box-sizing: border-box;
         }
 
-        /* --- Dynamic Ultra-Premium Theme Transitions --- */
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #07070a; /* Deep cinematic midnight */
+            background-color: #07070a;
             color: #ffffff;
             height: 100vh;
             overflow: hidden;
@@ -33,13 +32,14 @@
             justify-content: center;
             position: relative;
             transition: background-color 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Prevent pull-to-refresh on mobile */
+            overscroll-behavior-y: none; 
         }
 
         body.theme-love {
-            background-color: #17030a; /* Deep, rich burgundy/dark pink */
+            background-color: #17030a;
         }
 
-        /* --- Background Atmosphere --- */
         #atmos-container {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -48,7 +48,6 @@
             overflow: hidden;
         }
 
-        /* Hearts for Love Slide */
         .falling-heart {
             position: absolute;
             color: rgba(255, 80, 110, 0.6);
@@ -58,7 +57,6 @@
             filter: drop-shadow(0 0 12px rgba(255, 50, 80, 0.9));
         }
 
-        /* Glowing Stars for Normal Slides */
         .falling-star {
             position: absolute;
             background: #ffffff;
@@ -76,7 +74,6 @@
             }
         }
 
-        /* Advanced Ambient Lighting */
         .ambient-light {
             position: absolute;
             border-radius: 50%;
@@ -98,7 +95,6 @@
             100% { transform: scale(1.15); opacity: 0.5; }
         }
 
-        /* --- Entry Screen --- */
         #entry-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -121,7 +117,6 @@
             animation: pulseText 2.5s infinite alternate;
         }
         
-        /* Smooth Glowing Highlight for Headphones */
         #entry-screen span.hint {
             font-size: 0.8rem;
             letter-spacing: 3px;
@@ -145,7 +140,6 @@
             to { background-position: 200% center; }
         }
 
-        /* --- Main UI Wrapper --- */
         #main-content {
             opacity: 0;
             visibility: hidden;
@@ -167,7 +161,6 @@
             filter: blur(0px);
         }
 
-        /* --- Fixed & Spaced Intro Header --- */
         .intro {
             text-align: center;
             margin-bottom: 40px; 
@@ -194,14 +187,13 @@
             filter: drop-shadow(0 0 10px rgba(255,255,255,0.6));
         }
 
-        /* NEW: Wipe Animation for Text below "Hey" */
         .intro p {
             font-weight: 300;
             letter-spacing: 4px;
             color: #b4b9c7;
             font-size: 1.05rem;
             margin-top: 15px; 
-            clip-path: inset(0 100% 0 0); /* Hidden initially */
+            clip-path: inset(0 100% 0 0); 
             opacity: 0;
         }
 
@@ -222,7 +214,6 @@
             100% { clip-path: inset(0 0 0 0); opacity: 1; }
         }
 
-        /* --- 3D Slider Section --- */
         .slider-container {
             position: relative;
             width: 90%;
@@ -231,7 +222,13 @@
             perspective: 2500px;
             opacity: 0;
             transform: translateY(30px);
+            /* Cursor indicates it can be grabbed/swiped */
+            cursor: grab;
         }
+        .slider-container:active {
+            cursor: grabbing;
+        }
+        
         .start-anim .slider-container {
             animation: fadeUp 2s cubic-bezier(0.25, 1, 0.5, 1) 5s forwards;
         }
@@ -255,7 +252,6 @@
             pointer-events: auto;
         }
 
-        /* Ultra-Premium Glass Box */
         .content-box {
             background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(255, 255, 255, 0.01) 100%);
             backdrop-filter: blur(40px);
@@ -292,7 +288,6 @@
             left: 150%;
         }
 
-        /* 3D Elements Inside Card */
         .content-box .icon {
             font-size: 4.5rem;
             margin-bottom: 25px;
@@ -317,51 +312,9 @@
             max-width: 650px;
         }
 
-        /* --- Middle Left & Right Controls --- */
-        .btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            font-size: 1.6rem;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            z-index: 100;
-        }
-
-        .prev-btn { left: -90px; }
-        .next-btn { right: -90px; }
-
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.6);
-            transform: translateY(-50%) scale(1.15); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 25px rgba(255,255,255,0.2);
-        }
-        
-        .btn:active {
-            transform: translateY(-50%) scale(0.95);
-        }
-
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- Mobile Responsive Perfecting --- */
-        @media (max-width: 1050px) {
-            .prev-btn { left: -30px; }
-            .next-btn { right: -30px; }
         }
 
         @media (max-width: 768px) {
@@ -373,11 +326,7 @@
             .content-box .icon { font-size: 3.5rem; margin-bottom: 15px; }
             .content-box h2 { font-size: 3.2rem; margin-bottom: 15px; }
             .content-box p { font-size: 1rem; line-height: 1.6; }
-            /* Fluid height ensures it never clips off the bottom of the screen */
             .slider-container { height: 55vh; min-height: 400px; max-height: 450px; width: 88%; }
-            .btn { width: 45px; height: 45px; font-size: 1.2rem; }
-            .prev-btn { left: -15px; }
-            .next-btn { right: -15px; }
         }
 
         @media (max-width: 480px) {
@@ -389,11 +338,7 @@
             .content-box .icon { font-size: 3rem; margin-bottom: 10px; }
             .content-box h2 { font-size: 2.5rem; margin-bottom: 10px; }
             .content-box p { font-size: 0.85rem; line-height: 1.4; }
-            /* Strict dimensions for small phones to simulate native app layout */
             .slider-container { height: 55vh; min-height: 320px; max-height: 380px; width: 85%; }
-            .btn { width: 40px; height: 40px; font-size: 1rem; }
-            .prev-btn { left: -10px; }
-            .next-btn { right: -10px; }
         }
     </style>
 </head>
@@ -409,7 +354,7 @@
 
     <div id="entry-screen" onclick="startExperience()">
         <p>Tap to begin the journey</p>
-        <span class="hint">(Use headphones for best experience)</span>
+        <span class="hint">(Use headphones for best experience & Swipe like Reels!)</span>
     </div>
 
     <div class="ambient-light AL-1"></div>
@@ -428,8 +373,6 @@
         </div>
 
         <div class="slider-container">
-            
-            <button class="btn prev-btn" onclick="changeSlide(-1)">&#10094;</button>
             
             <div class="slide active" data-type="friends">
                 <div class="content-box" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
@@ -454,8 +397,6 @@
                     <p>Ab woh moment yaad karo jab tumhe tumhari family ne sabse jayada special feel karaya tha or tumne first time yeh realise kiya tha ki family over everything...</p>
                 </div>
             </div>
-
-            <button class="btn next-btn" onclick="changeSlide(1)">&#10095;</button>
             
         </div>
     </div>
@@ -468,14 +409,12 @@
             const bgMusic = document.getElementById('bgMusic');
             const slideSFX = document.getElementById('slideSFX');
 
-            // Force unlock audio context for SFX on first click
-            slideSFX.volume = 1.0; // Max volume for swoosh
+            slideSFX.volume = 1.0; 
             slideSFX.play().then(() => {
                 slideSFX.pause();
                 slideSFX.currentTime = 0;
             }).catch(e => console.log("SFX unlock silent fail (normal)"));
 
-            // Play background music
             bgMusic.volume = 0;
             bgMusic.play().then(() => {
                 let vol = 0;
@@ -495,7 +434,6 @@
                 mainContent.classList.add('visible');
                 setTimeout(() => {
                     mainContent.classList.add('start-anim');
-                    // Start Stars by default when page opens (Slide 0 is active)
                     startStarRain();
                 }, 400);
             }, 1800);
@@ -519,7 +457,7 @@
             element.style.transform = `perspective(1500px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         }
 
-        // --- 3. Slider & Theme Logic (The Core) ---
+        // --- 3. Slider & Theme Logic ---
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const slideSFX = document.getElementById('slideSFX');
@@ -527,7 +465,6 @@
         let particleInterval;
 
         function changeSlide(direction) {
-            // LOUD AND CLEAR SLIDE SOUND
             slideSFX.currentTime = 0;
             slideSFX.volume = 1.0; 
             slideSFX.play().catch(e => {});
@@ -539,8 +476,6 @@
             if (currentSlide < 0) currentSlide = slides.length - 1;
             
             slides[currentSlide].classList.add('active');
-
-            // Trigger background logic (Hearts vs Stars)
             checkAtmosphere(currentSlide);
         }
 
@@ -548,7 +483,6 @@
             const currentType = slides[index].getAttribute('data-type');
             const body = document.body;
 
-            // Clear any existing particles
             clearInterval(particleInterval);
 
             if (currentType === 'love') {
@@ -560,7 +494,7 @@
             }
         }
 
-        // --- 4. Dynamic Particle Systems (Hearts & Stars) ---
+        // --- 4. Dynamic Particle Systems ---
         function startHeartRain() {
             particleInterval = setInterval(() => {
                 const heart = document.createElement('div');
@@ -591,7 +525,7 @@
                 star.classList.add('falling-star');
                 
                 const startLeft = Math.random() * 100;
-                const size = Math.random() * 3 + 1; // Small stars (1px to 4px)
+                const size = Math.random() * 3 + 1; 
                 const duration = Math.random() * 8 + 5; 
                 const delay = Math.random() * 2;
 
@@ -606,8 +540,56 @@
                 setTimeout(() => {
                     if(star.parentNode) star.remove();
                 }, (duration + delay) * 1000);
-            }, 150); // Stars fall a bit faster and more frequently
+            }, 150); 
         }
+
+        // --- 5. INSTAGRAM REELS SWIPE / SCROLL LOGIC ---
+        let scrollTimeout = false;
+        
+        function triggerScroll(direction) {
+            const mainContent = document.getElementById('main-content');
+            // Only allow swiping if the entry screen is gone
+            if (!mainContent.classList.contains('visible')) return; 
+            
+            // Throttle to prevent glitching/double-swipes
+            if (scrollTimeout) return;
+            changeSlide(direction);
+            
+            scrollTimeout = true;
+            setTimeout(() => { scrollTimeout = false; }, 1200); 
+        }
+
+        // Mobile Touch Swipe detection
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        window.addEventListener('touchstart', e => {
+            touchStartY = e.changedTouches[0].screenY;
+        }, {passive: true});
+
+        window.addEventListener('touchend', e => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            const threshold = 50; // Minimum swipe distance
+            if (touchStartY - touchEndY > threshold) {
+                triggerScroll(1); // Swipe Up -> Next
+            } else if (touchEndY - touchStartY > threshold) {
+                triggerScroll(-1); // Swipe Down -> Prev
+            }
+        }
+
+        // Desktop Mouse Wheel support
+        window.addEventListener('wheel', e => {
+            if (e.deltaY > 30) {
+                triggerScroll(1); // Scroll Down -> Next
+            } else if (e.deltaY < -30) {
+                triggerScroll(-1); // Scroll Up -> Prev
+            }
+        }, {passive: true});
+
     </script>
 </body>
 </html>
