@@ -235,7 +235,7 @@
         .slide {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            transition: all 1.2s cubic-bezier(0.25, 1, 0.2, 1);
+            transition: all 1.0s cubic-bezier(0.25, 1, 0.2, 1);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -447,7 +447,7 @@
             element.style.transform = `perspective(1500px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         }
 
-        // --- 3. Vertical Gap & Peeking Stack Logic ---
+        // --- 3. Vertical Gap & Exact Peeking Stack Logic ---
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const slideSFX = document.getElementById('slideSFX');
@@ -462,17 +462,18 @@
                 
                 if (offset < 0) offset += slides.length; 
                 
-                // --- THE FIX FOR PERFECT PEEKING ---
-                // offset * 112% ka matlab hai active card ke niche ek patla sa khali gap aayega 
-                // aur fir dusra card start hoga. Rotation hata diya hai taki sidha dikhe.
-                let translateY = offset * 112; 
-                let translateZ = offset * -10; 
+                // --- THE EXACT FIX ---
+                // 118 ka matlab hai: 100% (pura current card) + 18% (khali space/gap).
+                // Isse active card ka bottom pura dikhega aur fir gap aayega.
+                let translateY = offset * 118; 
+                
+                // 3D Rotation aur translateZ hata diya gaya hai taki layout bilkul flat aur clean lage
+                let translateZ = 0; 
                 let rotateX = 0; 
                 
-                // Agle card ki starting clearly padhne mein aayegi, 
-                // Aur uske niche wale sabhi cards hide kar diye gaye hain.
-                let opacity = offset === 0 ? 1 : (offset === 1 ? 0.95 : 0);
-                let blur = offset === 0 ? 0 : (offset === 1 ? 0.5 : 5);
+                // Next card (offset 1) ki opacity high rakhi hai taki clear dikhe aur uspar koi blur nahi hai
+                let opacity = offset === 0 ? 1 : (offset === 1 ? 0.9 : 0);
+                let blur = 0; 
                 let zIndex = 10 - offset;
 
                 slide.style.transform = `translateY(${translateY}%) translateZ(${translateZ}px) rotateX(${rotateX}deg)`;
