@@ -164,7 +164,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Forces content to center horizontally */
+            align-items: center;
             text-align: center;
             margin-bottom: 40px; 
             z-index: 10;
@@ -196,7 +196,7 @@
             color: #b4b9c7;
             font-size: 1.05rem;
             margin-top: 15px;
-            width: 90%; /* Prevents text from touching edges */
+            width: 90%; 
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
@@ -231,7 +231,7 @@
             transform: translateY(30px);
             cursor: grab;
             transform-style: preserve-3d;
-            margin: 0 auto; /* Ensures the whole card block stays precisely centered */
+            margin: 0 auto; 
         }
         .slider-container:active {
             cursor: grabbing;
@@ -471,7 +471,11 @@
                 
                 if (offset < 0) offset += slides.length; 
                 
-                let translateY = offset * 118; 
+                // --- THE EXACT FIX ---
+                // Yahan maine 118 ki jagah 110 kar diya hai.
+                // Isse card niche screen ke bahar nahi katega, balki perfectly dikhega.
+                let translateY = offset * 110; 
+                
                 let translateZ = 0; 
                 let rotateX = 0; 
                 
