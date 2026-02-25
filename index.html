@@ -204,20 +204,27 @@
             opacity: 0;
         }
 
-        /* --- NEW: SCROLL DOWN INDICATOR --- */
-        .scroll-indicator {
-            margin-top: 25px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 15px rgba(255,255,255,0.1);
-            opacity: 0; /* Hidden initially */
+        /* --- NEW: SELF-DRAWING GLOWING SCROLL PROMPT --- */
+        #global-scroll-prompt {
+            position: fixed;
+            bottom: 3vh;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
             pointer-events: none;
+        }
+
+        .scroll-svg-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 38px;
+            fill: transparent;
+            stroke: var(--primary-glow);
+            stroke-width: 1.5px;
+            stroke-dasharray: 500;
+            stroke-dashoffset: 500;
         }
 
         .start-anim .svg-text {
@@ -228,9 +235,10 @@
             animation: textWipeReveal 2.5s cubic-bezier(0.4, 0, 0.2, 1) 4.5s forwards;
         }
 
-        /* Animate the Scroll Indicator AFTER the text finishes */
-        .start-anim .scroll-indicator {
-            animation: fadeInScroll 1s cubic-bezier(0.4, 0, 0.2, 1) 6.8s forwards, bounceUpDown 2s infinite ease-in-out 7.5s;
+        /* Scroll text starts drawing at 6s, then glows and pulses continuously */
+        .start-anim .scroll-svg-text {
+            animation: drawScroll 3s cubic-bezier(0.4, 0, 0.2, 1) 6s forwards, 
+                       glowPulseScroll 2s infinite alternate 9s;
         }
 
         @keyframes drawPath { to { stroke-dashoffset: 0; } }
@@ -242,13 +250,13 @@
             100% { clip-path: inset(0 0 0 0); opacity: 1; }
         }
 
-        @keyframes fadeInScroll {
-            to { opacity: 1; }
+        @keyframes drawScroll {
+            to { stroke-dashoffset: 0; }
         }
 
-        @keyframes bounceUpDown {
-            0%, 100% { transform: translateY(0); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
-            50% { transform: translateY(8px); box-shadow: 0 0 25px rgba(255,255,255,0.3); }
+        @keyframes glowPulseScroll {
+            0% { fill: transparent; stroke: rgba(255,255,255,0.6); filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); transform: scale(1); }
+            100% { fill: #ffffff; stroke: transparent; filter: drop-shadow(0 0 15px rgba(255,255,255,1)); transform: scale(1.05); }
         }
 
         .slider-container {
@@ -351,12 +359,13 @@
             .svg-container { max-width: 85%; }
             .svg-text { font-size: 75px; }
             .intro p { font-size: 0.95rem; }
-            .scroll-indicator { font-size: 0.75rem; padding: 6px 15px; margin-top: 20px; }
             .content-box { padding: 30px 25px; border-radius: 30px; }
             .content-box .icon { font-size: 3.5rem; margin-bottom: 15px; }
             .content-box h2 { font-size: 3.2rem; margin-bottom: 15px; }
             .content-box p { font-size: 1rem; line-height: 1.6; }
             .slider-container { height: 55vh; min-height: 400px; max-height: 450px; width: 88%; margin: 0 auto; }
+            #global-scroll-prompt { bottom: 2vh; max-width: 200px; }
+            .scroll-svg-text { font-size: 32px; }
         }
 
         @media (max-width: 480px) {
@@ -364,12 +373,13 @@
             .svg-container { max-width: 95%; }
             .svg-text { font-size: 55px; }
             .intro p { font-size: 0.8rem; letter-spacing: 2px; width: 92%; margin-left: auto; margin-right: auto; }
-            .scroll-indicator { font-size: 0.7rem; padding: 5px 12px; margin-top: 15px; }
             .content-box { padding: 25px 15px; border-radius: 20px; }
             .content-box .icon { font-size: 3rem; margin-bottom: 10px; }
             .content-box h2 { font-size: 2.5rem; margin-bottom: 10px; }
             .content-box p { font-size: 0.85rem; line-height: 1.4; }
             .slider-container { height: 55vh; min-height: 320px; max-height: 380px; width: 85%; margin: 0 auto; }
+            #global-scroll-prompt { bottom: 1vh; max-width: 180px; }
+            .scroll-svg-text { font-size: 28px; }
         }
     </style>
 </head>
@@ -401,7 +411,6 @@
                 </svg>
             </div>
             <p>Thoda waqt nikalte hain kuch khaas lamho ke liye</p>
-            <div class="scroll-indicator">↓ SCROLL DOWN ↓</div>
         </div>
 
         <div class="slider-container">
@@ -431,6 +440,13 @@
             </div>
             
         </div>
+
+        <div id="global-scroll-prompt">
+            <svg viewBox="0 0 200 50" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="scroll-svg-text">Scroll Down</text>
+            </svg>
+        </div>
+
     </div>
 
     <script>
@@ -451,7 +467,7 @@
             bgMusic.play().then(() => {
                 let vol = 0;
                 const interval = setInterval(() => {
-                    // Maximum volume reduced to 0.3 for a softer background feel
+                    // Maximum volume permanently reduced to 0.3
                     if (vol < 0.3) {
                         vol += 0.05;
                         bgMusic.volume = vol;
@@ -522,9 +538,9 @@
         }
 
         function changeSlide(direction) {
-            // Haptic Feedback for Android devices
+            // Strong Double-Tap Haptic Feedback for Android devices
             if (navigator.vibrate) {
-                navigator.vibrate(40); // 40ms light vibration
+                navigator.vibrate([60, 40, 60]); 
             }
 
             slideSFX.currentTime = 0;
