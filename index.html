@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Journey Within</title>
+    <title>TUSHAR</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
     
     <style>
@@ -161,6 +161,10 @@
         }
 
         .intro {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Forces content to center horizontally */
             text-align: center;
             margin-bottom: 40px; 
             z-index: 10;
@@ -188,10 +192,14 @@
 
         .intro p {
             font-weight: 300;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             color: #b4b9c7;
             font-size: 1.05rem;
-            margin-top: 15px; 
+            margin-top: 15px;
+            width: 90%; /* Prevents text from touching edges */
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
             clip-path: inset(0 100% 0 0); 
             opacity: 0;
         }
@@ -223,6 +231,7 @@
             transform: translateY(30px);
             cursor: grab;
             transform-style: preserve-3d;
+            margin: 0 auto; /* Ensures the whole card block stays precisely centered */
         }
         .slider-container:active {
             cursor: grabbing;
@@ -316,19 +325,19 @@
             .content-box .icon { font-size: 3.5rem; margin-bottom: 15px; }
             .content-box h2 { font-size: 3.2rem; margin-bottom: 15px; }
             .content-box p { font-size: 1rem; line-height: 1.6; }
-            .slider-container { height: 55vh; min-height: 400px; max-height: 450px; width: 88%; }
+            .slider-container { height: 55vh; min-height: 400px; max-height: 450px; width: 88%; margin: 0 auto; }
         }
 
         @media (max-width: 480px) {
-            .intro { margin-bottom: 15px; }
+            .intro { margin-bottom: 15px; align-items: center; justify-content: center; }
             .svg-container { max-width: 95%; }
             .svg-text { font-size: 55px; }
-            .intro p { font-size: 0.8rem; padding: 0 10px; letter-spacing: 2px; }
+            .intro p { font-size: 0.8rem; letter-spacing: 2px; width: 92%; margin-left: auto; margin-right: auto; }
             .content-box { padding: 25px 15px; border-radius: 20px; }
             .content-box .icon { font-size: 3rem; margin-bottom: 10px; }
             .content-box h2 { font-size: 2.5rem; margin-bottom: 10px; }
             .content-box p { font-size: 0.85rem; line-height: 1.4; }
-            .slider-container { height: 55vh; min-height: 320px; max-height: 380px; width: 85%; }
+            .slider-container { height: 55vh; min-height: 320px; max-height: 380px; width: 85%; margin: 0 auto; }
         }
     </style>
 </head>
@@ -462,16 +471,10 @@
                 
                 if (offset < 0) offset += slides.length; 
                 
-                // --- THE EXACT FIX ---
-                // 118 ka matlab hai: 100% (pura current card) + 18% (khali space/gap).
-                // Isse active card ka bottom pura dikhega aur fir gap aayega.
                 let translateY = offset * 118; 
-                
-                // 3D Rotation aur translateZ hata diya gaya hai taki layout bilkul flat aur clean lage
                 let translateZ = 0; 
                 let rotateX = 0; 
                 
-                // Next card (offset 1) ki opacity high rakhi hai taki clear dikhe aur uspar koi blur nahi hai
                 let opacity = offset === 0 ? 1 : (offset === 1 ? 0.9 : 0);
                 let blur = 0; 
                 let zIndex = 10 - offset;
